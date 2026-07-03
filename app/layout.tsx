@@ -30,7 +30,9 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${dmSans.variable}`}
     >
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        {children}
+      </body>
     </html>
   );
 }

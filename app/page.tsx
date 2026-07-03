@@ -5,11 +5,10 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
-import QuizCTA from "@/components/QuizCTA";
 import QuizModal from "@/components/QuizModal";
-import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function Home() {
   const [quizOpen, setQuizOpen] = useState(false);
@@ -21,11 +20,10 @@ export default function Home() {
         <Hero onOpenQuiz={() => setQuizOpen(true)} />
         <About />
         <Services />
-        <QuizCTA onOpenQuiz={() => setQuizOpen(true)} />
-        <Testimonials />
         <Contact />
       </main>
       <Footer />
+      {!quizOpen && <FloatingWhatsApp />}
       <QuizModal isOpen={quizOpen} onClose={() => setQuizOpen(false)} />
     </>
   );

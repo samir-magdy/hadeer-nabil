@@ -1,3 +1,10 @@
+import Image from "next/image";
+
+const ABOUT_IMAGE_SRC =
+  "https://images.unsplash.com/photo-1532294220147-279399e4e00f?w=1200&q=80&auto=format&fit=crop";
+const ABOUT_IMAGE_ALT =
+  "A woman reading a book — symbolizing language learning";
+
 const trustCards = [
   {
     icon: (
@@ -17,23 +24,26 @@ const trustCards = [
     label: "Online & in-person",
     detail: "Flexible lessons wherever works for you",
   },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-      </svg>
-    ),
-    label: "Cairo, Egypt",
-    detail: "Local knowledge, global English standards",
-  },
 ];
 
 export default function About() {
   return (
     <section id="about" className="bg-warm-white py-20 md:py-28">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+          {/* Image — desktop only, left column */}
+          <div className="hidden md:block">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
+              <Image
+                src={ABOUT_IMAGE_SRC}
+                alt={ABOUT_IMAGE_ALT}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+
           {/* Bio */}
           <div>
             <p className="text-sm font-medium tracking-widest text-accent uppercase mb-4">
@@ -49,32 +59,26 @@ export default function About() {
               ages and goals, from young learners building their foundations to
               professionals preparing for interviews and exams.
             </p>
+
+            {/* Image — mobile only, between the two paragraphs */}
+            <div className="md:hidden mb-6">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
+                <Image
+                  src={ABOUT_IMAGE_SRC}
+                  alt={ABOUT_IMAGE_ALT}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
             <p className="text-base text-text-mid leading-relaxed">
               I believe lessons should feel like conversations, not lectures.
               Every student is different, so every lesson plan is too — built
               around your goals, your pace, and what actually motivates you to
               keep going.
             </p>
-          </div>
-
-          {/* Trust cards */}
-          <div className="flex flex-col gap-4">
-            {trustCards.map((card) => (
-              <div
-                key={card.label}
-                className="flex items-start gap-4 bg-cream border border-border rounded-2xl p-5"
-              >
-                <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-primary-light flex items-center justify-center text-primary">
-                  {card.icon}
-                </div>
-                <div>
-                  <p className="font-medium text-text-dark text-sm md:text-base">
-                    {card.label}
-                  </p>
-                  <p className="text-sm text-text-light mt-0.5">{card.detail}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

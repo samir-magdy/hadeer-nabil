@@ -9,17 +9,17 @@ interface QuizModalProps {
   onClose: () => void;
 }
 
-type Stage = "quiz" | "result";
+type Stage = "intro" | "quiz" | "result";
 
 export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
-  const [stage, setStage] = useState<Stage>("quiz");
+  const [stage, setStage] = useState<Stage>("intro");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [score, setScore] = useState(0);
 
   const reset = useCallback(() => {
-    setStage("quiz");
+    setStage("intro");
     setCurrentIndex(0);
     setSelectedOption(null);
     setConfirmed(false);
@@ -96,26 +96,44 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
       {/* Modal */}
       <div className="relative w-full max-w-lg bg-warm-white rounded-3xl shadow-2xl animate-scale-in overflow-hidden">
         {/* Close */}
-        {/* <button
+        <button
           onClick={onClose}
           aria-label="Close quiz"
-          className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full text-text-light hover:text-text-dark hover:bg-border transition-colors z-10"
+          className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full text-text-light hover:text-text-dark hover:cursor-pointer hover:bg-border transition-colors z-10"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </button> */}
+        </button>
+
+        {stage === "intro" && (
+          <div className="px-6 py-10 text-center">
+            <p className="text-sm font-medium tracking-widest text-primary uppercase mb-4">
+              Free placement quiz
+            </p>
+            <h3 className="font-display text-2xl md:text-3xl text-text-dark italic mb-4 leading-snug">
+              Not sure where to start?
+            </h3>
+            <p className="text-base text-text-mid leading-relaxed mb-8 max-w-sm mx-auto">
+              Take a quick placement quiz and find out your English level in
+              under 3 minutes. No sign-up needed — just honest answers.
+            </p>
+            <button
+              onClick={() => setStage("quiz")}
+              className="inline-flex items-center justify-center bg-primary text-warm-white font-medium px-8 py-4 rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base shadow-lg shadow-primary/25 w-full"
+            >
+              Start the quiz
+            </button>
+          </div>
+        )}
 
         {stage === "quiz" && (
           <>
             {/* Progress */}
             <div className="px-6 pt-6 pb-0">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-2.5">
                 <span className="text-xs text-text-light font-medium">
                   Question {currentIndex + 1} of {questions.length}
-                </span>
-                <span className="text-xs text-text-light font-medium">
-                  {Math.round(progress)}%
                 </span>
               </div>
               <div className="h-1.5 bg-border rounded-full overflow-hidden">
