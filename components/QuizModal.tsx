@@ -174,7 +174,6 @@ export default function QuizModal({
 
         {stage === "intro" && (
           <div className="px-6 py-10 text-center">
-         
             <h3
               className="font-display text-2xl md:text-3xl text-text-dark italic my-4 leading-snug"
               data-arabic-ui={language === "ar" ? "true" : undefined}
@@ -255,9 +254,10 @@ export default function QuizModal({
                     key={i}
                     onClick={() => handleSelect(i)}
                     disabled={confirmed}
-                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[52px] flex items-center justify-between ${style}`}
+                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[56px] flex items-center justify-between ${style}`}
                   >
-                    <span>{option}</span>
+                    {/* Wrap text in a block with a solid line-height to absorb font-weight adjustments */}
+                    <span className="leading-normal block pr-2">{option}</span>
 
                     {/* Verification Icons */}
                     {confirmed && isCorrect && (
