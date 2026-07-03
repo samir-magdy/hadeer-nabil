@@ -9,7 +9,7 @@ interface HeroProps {
 export default function Hero({ onOpenQuiz, language }: HeroProps) {
   const content = pageContent[language].hero;
   return (
-    <section className="min-h-screen bg-cream flex items-start [@supports_(-webkit-hyphens:none)]:items-center [@supports_(-webkit-hyphens:none)]:pt-0 sm:items-center pt-20 rtl:pt-24 sm:pt-16 md:pt-0">
+    <section className="min-h-screen bg-cream flex items-start [@supports_(-webkit-hyphens:none)]:items-center [@supports_(-webkit-hyphens:none)]:pt-6 sm:items-center pt-20 rtl:pt-24 sm:pt-16 md:pt-0">
       <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 w-full md:py-20 lg:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 rtl:gap-12 [@supports_(-webkit-hyphens:none)]:gap-10 [@supports_(-webkit-hyphens:none)]:rtl:gap-16 md:gap-20 lg:gap-28 items-center">
           {/* Text */}
