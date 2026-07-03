@@ -254,7 +254,7 @@ export default function QuizModal({
                     key={i}
                     onClick={() => handleSelect(i)}
                     disabled={confirmed}
-                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[56px] flex items-center justify-between ${style}`}
+                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[56px] flex items-center justify-between subpixel-antialiased ${style}`}
                   >
                     {/* Wrap text in a block with a solid line-height to absorb font-weight adjustments */}
                     <span className="leading-normal block pr-2 whitespace-nowrap">{option}</span>
