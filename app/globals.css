@@ -13,6 +13,7 @@
 
   --font-display: var(--font-playfair);
   --font-body: var(--font-dm-sans);
+  --font-arabic: var(--font-cairo);
 }
 
 :root {
@@ -35,6 +36,19 @@ body {
   background-color: var(--cream);
   color: var(--text-mid);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+[dir="rtl"] {
+  font-family: var(--font-cairo), system-ui, sans-serif;
+}
+
+[dir="rtl"] * {
+  font-family: inherit;
+}
+
+[dir="rtl"] .font-display,
+[dir="rtl"] .font-body {
+  font-family: var(--font-cairo), system-ui, sans-serif;
 }
 
 @keyframes fade-in-up {

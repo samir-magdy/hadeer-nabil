@@ -3,15 +3,21 @@
 import { useState, useEffect, useCallback } from "react";
 import { questions, getLevel } from "@/lib/quizData";
 import { WHATSAPP_URL } from "@/lib/constants";
+import { Language } from "@/lib/content";
 
 interface QuizModalProps {
   isOpen: boolean;
   onClose: () => void;
+  language: Language;
 }
 
 type Stage = "intro" | "quiz" | "result";
 
-export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
+export default function QuizModal({
+  isOpen,
+  onClose,
+  language,
+}: QuizModalProps) {
   const [stage, setStage] = useState<Stage>("intro");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -43,13 +49,15 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   // Prevent body scroll when open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const question = questions[currentIndex];
-  const progress = ((currentIndex) / questions.length) * 100;
+  const progress = (currentIndex / questions.length) * 100;
   const isLast = currentIndex === questions.length - 1;
 
   function handleSelect(index: number) {
@@ -60,7 +68,8 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   function handleNext() {
     if (selectedOption === null) return;
 
-    const newScore = selectedOption === question.correctIndex ? score + 1 : score;
+    const newScore =
+      selectedOption === question.correctIndex ? score + 1 : score;
 
     if (confirmed) {
       if (isLast) {
@@ -79,6 +88,52 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
   }
 
   const level = stage === "result" ? getLevel(score) : null;
+  const translatedLevel =
+    stage === "result" && level && language === "ar"
+      ? {
+          ...level,
+          name: arabicLevelNames[level.code as keyof typeof arabicLevelNames],
+          description:
+            arabicLevelDescriptions[
+              level.code as keyof typeof arabicLevelDescriptions
+            ],
+          suggestion:
+            arabicLevelSuggestions[
+              level.code as keyof typeof arabicLevelSuggestions
+            ],
+        }
+      : level;
+
+  const introContent =
+    language === "ar"
+      ? {
+          title: "لست متأكدًا من أين تبدأ؟",
+          description:
+            "أجرِ اختبارًا سريعًا لتحديد مستواك في الإنجليزية خلال أقل من 3 دقائق.",
+          button: "ابدأ الاختبار",
+        }
+      : {
+          title: "Not sure where to start?",
+          description:
+            "Take a quick placement quiz and find out your English level in under 3 minutes.",
+          button: "Start the quiz",
+        };
+
+  const modalDirection =
+    stage === "quiz" ? "ltr" : language === "ar" ? "rtl" : "ltr";
+
+  const resultContent =
+    language === "ar"
+      ? {
+          heading: `لقد حصلت على ${score} من ${questions.length}`,
+          cta: "احجز أول درس",
+          retake: "أعد الاختبار",
+        }
+      : {
+          heading: `You scored ${score} out of ${questions.length}`,
+          cta: "Book a your first lesson",
+          retake: "Retake the quiz",
+        };
 
   return (
     <div
@@ -88,41 +143,56 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
       aria-label="English level quiz"
     >
       {/* Overlay */}
-      <div
-        className="absolute inset-0 bg-text-dark/60 backdrop-blur-sm animate-fade-in"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-text-dark/60 backdrop-blur-sm animate-fade-in" />
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg bg-warm-white rounded-3xl shadow-2xl animate-scale-in overflow-hidden">
+      <div
+        className="relative w-full max-w-lg bg-warm-white rounded-3xl shadow-2xl animate-scale-in overflow-hidden"
+        dir={modalDirection}
+        data-arabic-ui={language === "ar" ? "true" : undefined}
+      >
         {/* Close */}
         <button
           onClick={onClose}
           aria-label="Close quiz"
-          className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full text-text-light hover:text-text-dark hover:cursor-pointer hover:bg-border transition-colors z-10"
+          className="cursor-pointer absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full text-text-light hover:text-text-dark hover:bg-border transition-colors z-10"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            className="w-4 h-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         {stage === "intro" && (
           <div className="px-6 py-10 text-center">
-            <p className="text-sm font-medium tracking-widest text-primary uppercase mb-4">
-              Free placement quiz
-            </p>
-            <h3 className="font-display text-2xl md:text-3xl text-text-dark italic mb-4 leading-snug">
-              Not sure where to start?
+         
+            <h3
+              className="font-display text-2xl md:text-3xl text-text-dark italic my-4 leading-snug"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              {introContent.title}
             </h3>
-            <p className="text-base text-text-mid leading-relaxed mb-8 max-w-sm mx-auto">
-              Take a quick placement quiz and find out your English level in
-              under 3 minutes. No sign-up needed — just honest answers.
+            <p
+              className="text-base text-text-mid leading-relaxed mb-8 max-w-sm mx-auto"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              {introContent.description}
             </p>
             <button
               onClick={() => setStage("quiz")}
-              className="inline-flex items-center justify-center bg-primary text-warm-white font-medium px-8 py-4 rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base shadow-lg shadow-primary/25 w-full"
+              className="cursor-pointer inline-flex items-center justify-center bg-primary text-warm-white font-medium px-8 py-4 rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base shadow-lg shadow-primary/25 w-full"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
             >
-              Start the quiz
+              {introContent.button}
             </button>
           </div>
         )}
@@ -132,7 +202,10 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
             {/* Progress */}
             <div className="px-6 pt-6 pb-0">
               <div className="flex items-center justify-between mb-2.5">
-                <span className="text-xs text-text-light font-medium">
+                <span
+                  className="text-xs text-text-light font-medium"
+                  data-arabic-ui={language === "ar" ? "true" : undefined}
+                >
                   Question {currentIndex + 1} of {questions.length}
                 </span>
               </div>
@@ -146,7 +219,10 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
 
             {/* Question */}
             <div className="px-6 pt-6 pb-2">
-              <h3 className="font-display text-lg md:text-xl text-text-dark leading-snug">
+              <h3
+                className="font-display text-lg md:text-xl text-text-dark leading-snug"
+                data-arabic-ui={language === "ar" ? "true" : undefined}
+              >
                 {question.text}
               </h3>
             </div>
@@ -162,14 +238,16 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
 
                 if (confirmed) {
                   if (isCorrect) {
-                    style = "border-2 border-accent bg-accent/10 text-accent font-medium";
+                    style =
+                      "border border-accent bg-accent/10 font-medium text-accent";
                   } else if (isSelected && !isCorrect) {
-                    style = "border-2 border-red-400 bg-red-50 text-red-600";
+                    style = "border border-red-400 bg-red-100 text-red-700";
                   } else {
                     style = "border border-border text-text-light opacity-60";
                   }
                 } else if (isSelected) {
-                  style = "border-2 border-primary bg-primary-light text-text-dark font-medium";
+                  style =
+                    "border border-primary bg-primary-light text-text-dark font-medium";
                 }
 
                 return (
@@ -177,9 +255,41 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
                     key={i}
                     onClick={() => handleSelect(i)}
                     disabled={confirmed}
-                    className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[52px] ${style}`}
+                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[52px] flex items-center justify-between ${style}`}
                   >
-                    {option}
+                    <span>{option}</span>
+
+                    {/* Verification Icons */}
+                    {confirmed && isCorrect && (
+                      <svg
+                        className="w-5 h-5 shrink-0 text-accent ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4.5 12.75l6 6 9-13.5"
+                        />
+                      </svg>
+                    )}
+                    {confirmed && isSelected && !isCorrect && (
+                      <svg
+                        className="w-5 h-5 shrink-0 text-red-500 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    )}
                   </button>
                 );
               })}
@@ -190,51 +300,68 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
               <button
                 onClick={handleNext}
                 disabled={selectedOption === null}
-                className="w-full bg-primary text-warm-white font-medium py-3.5 rounded-full text-sm hover:bg-primary/90 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 min-h-[52px]"
+                className="cursor-pointer w-full bg-primary text-warm-white font-medium py-3.5 rounded-full text-sm hover:bg-primary/90 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 min-h-[52px]"
+                data-arabic-ui={language === "ar" ? "true" : undefined}
               >
                 {!confirmed
                   ? "Check answer"
                   : isLast
-                  ? "See my result"
-                  : "Next question →"}
+                    ? "See my result"
+                    : "Next question →"}
               </button>
             </div>
           </>
         )}
 
-        {stage === "result" && level && (
+        {stage === "result" && translatedLevel && (
           <div className="px-6 py-10 text-center">
             {/* Level badge */}
-            <div className="inline-flex items-center gap-2 bg-primary-light text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-              <span className="font-display italic text-base">{level.code}</span>
+            <div
+              className="inline-flex items-center gap-2 bg-primary-light text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-6"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              <span className="font-display italic text-base">
+                {translatedLevel.code}
+              </span>
               <span>·</span>
-              <span>{level.name}</span>
+              <span>{translatedLevel.name}</span>
             </div>
 
-            <h3 className="font-display text-2xl md:text-3xl text-text-dark italic mb-3 leading-snug">
-              You scored {score} out of {questions.length}
+            <h3
+              className="font-display text-2xl md:text-3xl text-text-dark italic mb-3 leading-snug"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              {resultContent.heading}
             </h3>
-            <p className="text-base text-text-mid leading-relaxed mb-3">
-              {level.description}
+            <p
+              className="text-base text-text-mid leading-relaxed mb-3"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              {translatedLevel.description}
             </p>
-            <p className="text-sm text-text-light leading-relaxed mb-8 max-w-sm mx-auto">
-              {level.suggestion}
+            <p
+              className="text-sm text-text-light leading-relaxed mb-8 max-w-sm mx-auto"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
+            >
+              {translatedLevel.suggestion}
             </p>
 
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium px-7 py-4 rounded-full hover:bg-[#25D366]/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base w-full mb-3"
+              className="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium px-7 py-4 rounded-full hover:bg-[#25D366]/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base w-full mb-3"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
             >
               <WhatsAppIcon />
-              Book a lesson with Hadeer
+              {resultContent.cta}
             </a>
             <button
               onClick={reset}
-              className="text-sm text-text-light hover:text-text-mid transition-colors"
+              className="cursor-pointer text-sm text-text-light hover:text-text-mid transition-colors"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
             >
-              Retake the quiz
+              {resultContent.retake}
             </button>
           </div>
         )}
@@ -242,6 +369,33 @@ export default function QuizModal({ isOpen, onClose }: QuizModalProps) {
     </div>
   );
 }
+
+const arabicLevelNames = {
+  A1: "مبتدئ",
+  A2: "مبتدئ متقدم",
+  B1: "متوسط",
+  B2: "متوسط متقدم",
+  C1: "متقدم",
+  C2: "إتقان",
+} as const;
+
+const arabicLevelDescriptions = {
+  A1: "أنت تبدأ رحلتك مع الإنجليزية. هذا مكان ممتاز للبدء!",
+  A2: "يمكنك التعامل مع محادثات بسيطة وفهم العبارات الأساسية.",
+  B1: "يمكنك التواصل في المواقف المألوفة وفهم النقاط الرئيسية للكلام الواضح.",
+  B2: "يمكنك فهم الأفكار الرئيسية للنصوص المعقدة والتفاعل بطلاقة.",
+  C1: "تعبّر عن نفسك بطلاقة وطبيعية دون الحاجة إلى البحث كثيرًا عن الكلمات.",
+  C2: "لديك سيطرة شبه أصلية على الإنجليزية — دقيقة وطبيعية ومفصلة.",
+} as const;
+
+const arabicLevelSuggestions = {
+  A1: "سنبني أساسك خطوة بخطوة — الأبجدية والتحيات والمفردات الأساسية.",
+  A2: "أنت جاهز لتوسيع مفرداتك والبدء في تكوين جمل أكثر اكتمالًا.",
+  B1: "أنت جاهز للدروس الحوارية وبنى نحوية أكثر تعقيدًا.",
+  B2: "التحضير لاختبارات IELTS أو TOEFL أو الإنجليزية للأعمال خطوة ممتازة لك.",
+  C1: "سنحسّن كتابتك ون sharpen your academic or professional English and polish your style.",
+  C2: "يمكننا التركيز على الكتابة المتقدمة أو النقاش أو الإنجليزية المتخصصة في مجالك.",
+} as const;
 
 function WhatsAppIcon() {
   return (

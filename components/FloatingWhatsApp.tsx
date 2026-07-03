@@ -7,7 +7,7 @@ export default function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Message on WhatsApp"
-      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-transform duration-200"
+      className="cursor-pointer fixed bottom-4 right-4 rtl:left-4 sm:bottom-6 sm:right-6 z-50 flex items-center justify-center w-12 sm:w-14 h-12 sm:h-14 rounded-full shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-transform duration-200"
     >
       <img
         src="/whatsapp-green.svg"

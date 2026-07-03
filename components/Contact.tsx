@@ -1,35 +1,69 @@
-import { EMAIL, SOCIAL } from "@/lib/constants";
+import { EMAIL, PHONE_NUMBER, SOCIAL, WHATSAPP_URL } from "@/lib/constants";
+import { Language, pageContent } from "@/lib/content";
 
-export default function Contact() {
+export default function Contact({ language }: { language: Language }) {
+  const content = pageContent[language].contact;
   return (
-    <section id="contact" className="bg-warm-white py-20 md:py-28">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="font-display text-3xl md:text-4xl text-text-dark italic mb-4 sm:mb-6">
-          Ready to get started?
+    <section id="contact" className="bg-warm-white py-20 md:py-28 lg:py-32 min-h-screen flex items-center">
+      <div className="max-w-4xl mx-auto px-6 sm:px-6 lg:px-8 text-center">
+        <h2
+          className="font-display text-3xl md:text-4xl lg:text-5xl text-text-dark italic mb-4 sm:mb-6 md:mb-8"
+          data-arabic-ui={language === "ar" ? "true" : undefined}
+        >
+          {content.heading}
         </h2>
-        <p className="text-base md:text-lg text-text-mid leading-relaxed mb-10 max-w-md mx-auto">
-          Reach out and we&apos;ll figure out the best lesson plan for you — no
-          pressure, just a conversation.
+        <p
+          className="text-base md:text-lg lg:text-xl text-text-mid leading-relaxed mb-8 md:mb-10 max-w-md md:max-w-lg mx-auto"
+          data-arabic-ui={language === "ar" ? "true" : undefined}
+        >
+          {content.description}
         </p>
 
-        {/* Email */}
-        <div className="mb-8">
-          <a
-            href={`mailto:${EMAIL}`}
-            className="text-sm text-text-light hover:text-text-mid transition-colors underline underline-offset-4 decoration-border"
-          >
-            {EMAIL}
-          </a>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 sm:gap-4 rounded-full bg-[#25D366] px-8 py-3 sm:px-6 sm:py-3.5 text-xl rtl:text-xl sm:rtl:text-2xl md:px-7 md:py-4 lg:px-8 lg:py-4 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#20b958] hover:shadow-md mb-8 md:mb-10"
+          data-arabic-ui={language === "ar" ? "true" : undefined}
+        >
+          <WhatsAppIcon />
+          <span>{content.cta}</span>
+        </a>
+
+        {/* Contact details */}
+        <div className="mb-8 md:mb-10 flex flex-col items-center gap-3 md:gap-4">
+      <a
+      dir="ltr"
+  href={`mailto:${EMAIL}`}
+  className="inline-flex items-center gap-2 cursor-pointer text-base md:text-xl text-text-light hover:text-text-mid transition-colors underline underline-offset-4 decoration-border"
+  data-arabic-ui={language === "ar" ? "true" : undefined}
+>
+  {/* Mail Icon */}
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+  <span>{EMAIL}</span>
+</a>
+
+<a
+  dir="ltr"
+  href={`tel:${PHONE_NUMBER}`}
+  className="inline-flex items-center gap-2 cursor-pointer text-base md:text-xl text-text-light hover:text-text-mid transition-colors underline underline-offset-4 decoration-border"
+  data-arabic-ui={language === "ar" ? "true" : undefined}
+>
+  {/* Phone Icon */}
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  <span>{PHONE_NUMBER}</span>
+</a>
         </div>
 
         {/* Social icons */}
-        <div className="flex items-center justify-center gap-5">
+        <div className="flex items-center justify-center gap-3 md:gap-6">
           <a
             href={SOCIAL.tiktok}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="TikTok"
-            className="w-11 h-11 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            className="cursor-pointer w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            data-arabic-ui={language === "ar" ? "true" : undefined}
           >
             <TikTokIcon />
           </a>
@@ -38,7 +72,8 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            className="w-11 h-11 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            className="cursor-pointer w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            data-arabic-ui={language === "ar" ? "true" : undefined}
           >
             <InstagramIcon />
           </a>
@@ -47,13 +82,20 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="YouTube"
-            className="w-11 h-11 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            className="cursor-pointer w-11 h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full border border-border text-text-light hover:text-text-dark hover:border-text-mid transition-colors"
+            data-arabic-ui={language === "ar" ? "true" : undefined}
           >
             <YouTubeIcon />
           </a>
         </div>
       </div>
     </section>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <img src="/whatsapp-green.svg" alt="" className="w-6 sm:w-8" />
   );
 }
 

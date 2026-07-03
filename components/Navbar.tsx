@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Language, pageContent } from "@/lib/content";
 
 export default function Navbar({
   onOpenQuiz,
+  language,
+  onLanguageChange,
 }: {
   onOpenQuiz: () => void;
+  language: Language;
+  onLanguageChange: (language: Language) => void;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,11 +21,8 @@ export default function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Contact", href: "#contact" },
-  ];
+  const content = pageContent[language];
+  const navLinks = content.navbar.links;
 
   return (
     <header
@@ -30,55 +32,76 @@ export default function Navbar({
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-18">
+      <nav className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-18">
         {/* Logo */}
         <a
           href="#"
           className="font-display text-2xl md:text-2xl text-text-dark tracking-tight"
+          data-arabic-ui={language === "ar" ? "true" : undefined}
         >
-          Hadeer Nabil
+          {content.navbar.logo}
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-4 md:gap-16">
+          {/* Desktop nav */}
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-text-mid hover:text-text-dark transition-colors duration-200"
+              className="cursor-pointer text-sm md:text-xl text-text-mid hover:text-text-dark transition-colors duration-200"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
             >
               {link.label}
             </a>
           ))}
+
+        </div>
+          <button
+            type="button"
+            onClick={() => onLanguageChange(language === "en" ? "ar" : "en")}
+            className="hidden md:inline-block cursor-pointer rounded-full border border-border px-3 py-1.5 text-sm sm:text-base text-text-dark transition-colors hover:bg-primary-light"
+          >
+            {language === "en" ? "عربي" : "EN"}
+          </button>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => onLanguageChange(language === "en" ? "ar" : "en")}
+            className="cursor-pointer rounded-full border border-border px-3 py-1.5 text-sm text-text-dark transition-colors hover:bg-primary-light"
+          >
+            {language === "en" ? "عربي" : "EN"}
+          </button>
+
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={content.navbar.menuAria}
+            aria-expanded={menuOpen}
+            className="cursor-pointer md:hidden relative flex h-11 w-11 items-center justify-center"
+          >
+            <span
+              className={`absolute block h-0.5 w-6 rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out origin-center ${
+                menuOpen ? "translate-y-0 rotate-45" : "-translate-y-2"
+              }`}
+            />
+            <span
+              className={`block h-0.5 w-6 rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out ${
+                menuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute block h-0.5 w-6 rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out origin-center ${
+                menuOpen ? "translate-y-0 -rotate-45" : "translate-y-2"
+              }`}
+            />
+          </button>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
-          className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5"
-        >
-          <span
-            className={`block h-0.5 w-6 bg-text-dark transition-all duration-300 ${
-              menuOpen ? "rotate-45 translate-y-2" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-text-dark transition-all duration-300 ${
-              menuOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-text-dark transition-all duration-300 ${
-              menuOpen ? "-rotate-45 -translate-y-2" : ""
-            }`}
-          />
-        </button>
       </nav>
 
       {/* Mobile drawer */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
           menuOpen ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
         } bg-warm-white border-b border-border`}
       >
@@ -88,7 +111,8 @@ export default function Navbar({
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-base text-text-mid hover:text-text-dark transition-colors py-1"
+              className="cursor-pointer text-base text-text-mid hover:text-text-dark transition-colors py-1"
+              data-arabic-ui={language === "ar" ? "true" : undefined}
             >
               {link.label}
             </a>

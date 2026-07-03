@@ -1,4 +1,6 @@
-export const WHATSAPP_NUMBER = ""; // placeholder
+export const WHATSAPP_NUMBER = "+201029124230";
+
+export const PHONE_NUMBER = WHATSAPP_NUMBER;
 
 export const EMAIL = "hadirnabil65@gmail.com";
 
@@ -8,4 +10,4 @@ export const SOCIAL = {
   youtube: "https://youtube.com/@hadeernabil9334",
 };
 
-export const WHATSAPP_URL = `https://wa.me/+201029124230`
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
