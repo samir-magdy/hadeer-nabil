@@ -23,7 +23,7 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: "Hadeer Nabil | Private English Lessons in Egypt",
   description:
-    "Private English lessons online and in-person with Hadeer Nabil in Cairo, Egypt. IELTS prep, Business English, conversation, and academic support for all levels.",
+    "Private English lessons online and in-person in Cairo, Egypt. Providing school support, phonics & early reading, summer courses and everyday conversation.",
   icons: ["/favicon.png"]
   };
 
