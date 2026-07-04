@@ -68,22 +68,25 @@ export default function QuizModal({
   function handleNext() {
     if (selectedOption === null) return;
 
-    const newScore =
-      selectedOption === question.correctIndex ? score + 1 : score;
+    const isCorrect = selectedOption === question.correctIndex;
 
-    if (confirmed) {
-      if (isLast) {
-        setScore(newScore);
-        setStage("result");
-      } else {
-        setScore(newScore);
-        setCurrentIndex((i) => i + 1);
-        setSelectedOption(null);
-        setConfirmed(false);
-      }
-    } else {
-      setScore(newScore);
+    // When first checking the answer, update the score once and mark as
+    // confirmed. On the subsequent click (when confirmed === true) we only
+    // advance to the next question or show results without changing score
+    // again — this prevents double-counting the same correct answer.
+    if (!confirmed) {
+      if (isCorrect) setScore((s) => s + 1);
       setConfirmed(true);
+      return;
+    }
+
+    // confirmed === true: advance or finish
+    if (isLast) {
+      setStage("result");
+    } else {
+      setCurrentIndex((i) => i + 1);
+      setSelectedOption(null);
+      setConfirmed(false);
     }
   }
 
