@@ -31,12 +31,12 @@ export default function About({ language }: { language: Language }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
           {/* Image — desktop only, left column */}
           <div className="hidden md:block">
-            <div className="relative aspect-[5/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
+            <div className="relative w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
               <img
                 src={ABOUT_IMAGE_SRC}
                 alt={ABOUT_IMAGE_ALT}
                 sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-cover"
+                className="object-cover h-120"
               />
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function About({ language }: { language: Language }) {
 
             {/* Image — mobile only, between the two paragraphs */}
             <div className="md:hidden mb-6">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
+              <div className="relative w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
                 <img
                   src={ABOUT_IMAGE_SRC}
                   alt={ABOUT_IMAGE_ALT}

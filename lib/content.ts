@@ -27,6 +27,9 @@ export interface PageContent {
     description: string;
     cta: string;
   };
+  footer: {
+    creditPrefix: string;
+  };
 
 }
 
@@ -90,7 +93,9 @@ export const pageContent: Record<Language, PageContent> = {
         "Reach out and we’ll figure out the best lesson plan for you — no pressure, just a conversation.",
       cta: "Chat on WhatsApp",
     },
-  
+    footer: {
+      creditPrefix: "Website by",
+    },
   },
   ar: {
     navbar: {
@@ -150,6 +155,9 @@ export const pageContent: Record<Language, PageContent> = {
       description:
         "تواصل معي وسنحدد لك أفضل خطة دراسية.",
       cta: "تواصل عبر الواتساب",
+    },
+    footer: {
+      creditPrefix: "تم تطوير الموقع بواسطة",
     },
  
   },
