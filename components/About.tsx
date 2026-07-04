@@ -32,10 +32,9 @@ export default function About({ language }: { language: Language }) {
           {/* Image — desktop only, left column */}
           <div className="hidden md:block">
             <div className="relative aspect-[5/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
-              <Image
+              <img
                 src={ABOUT_IMAGE_SRC}
                 alt={ABOUT_IMAGE_ALT}
-                fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover"
               />
@@ -60,10 +59,9 @@ export default function About({ language }: { language: Language }) {
             {/* Image — mobile only, between the two paragraphs */}
             <div className="md:hidden mb-6">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-text-dark/10">
-                <Image
+                <img
                   src={ABOUT_IMAGE_SRC}
                   alt={ABOUT_IMAGE_ALT}
-                  fill
                   sizes="100vw"
                   className="object-cover"
                 />
