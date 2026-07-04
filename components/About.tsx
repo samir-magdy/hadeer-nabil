@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { Language, pageContent } from "@/lib/content";
 
 const ABOUT_IMAGE_SRC =
-  "https://images.unsplash.com/photo-1532294220147-279399e4e00f?w=1200&q=80&auto=format&fit=crop";
+  "/about.avif";
 const ABOUT_IMAGE_ALT =
   "A woman reading a book — symbolizing language learning";
 

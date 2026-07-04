@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Language, pageContent } from "@/lib/content";
 
 interface HeroProps {
