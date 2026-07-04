@@ -134,7 +134,7 @@ export default function QuizModal({
         }
       : {
           heading: `You scored ${score} out of ${questions.length}`,
-          cta: "Book a your first lesson",
+          cta: "Book your first lesson",
           retake: "Retake the quiz",
         };
 
