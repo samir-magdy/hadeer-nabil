@@ -13,15 +13,15 @@ export default function FooterCredit({ language }: { language: Language }) {
           <a
             href={
               language === "ar"
-                ? "https://smwebdesign.studio/ar"
-                : "https://smwebdesign.studio"
+                ? "https://smweb.studio/ar"
+                : "https://smweb.studio"
             }
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold text-text-mid/90 hover:text-text-dark/90 underline underline-offset-2"
             dir="ltr"
           >
-            SM Web Design Studio
+            SM Web Studio
           </a>
         </p>
       </div>
