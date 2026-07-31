@@ -1,35 +1,98 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS
+   Every original token is preserved (existing components keep
+   working untouched). New tokens extend the palette so the
+   terracotta/sage identity can be used with intent.
+   ============================================================ */
+
 @theme {
+  /* --- Surfaces --- */
   --color-cream: #FBF8F3;
   --color-warm-white: #FFF9F2;
+  --color-primary-pale: #F8EEE4;   /* NEW: soft terracotta wash for panels/chips */
+
+  /* --- Terracotta (primary) --- */
   --color-primary: #C96A35;
+  --color-primary-deep: #A9542A;   /* NEW: hover/pressed for filled buttons */
   --color-primary-light: #F2DDD1;
+
+  /* --- Sage (accent) --- */
   --color-accent: #4A8C7A;
+  --color-accent-deep: #3B7263;    /* NEW: sage hover / sage text on light bg */
+  --color-accent-light: #E2EEE8;   /* NEW: sage tint for chips/highlights */
+
+  /* --- Feedback (palette-consistent, replaces stock red) --- */
+  --color-error: #BC4B33;          /* NEW: warm terracotta-red */
+  --color-error-light: #F8E4DE;    /* NEW */
+
+  /* --- Text --- */
   --color-text-dark: #1E1208;
   --color-text-mid: #6B5744;
   --color-text-light: #A8917E;
-  --color-border: #EDE0D4;
 
+  /* --- Lines --- */
+  --color-border: #EDE0D4;
+  --color-border-strong: #DFCBB8;  /* NEW: visible affordances (inputs, tappable rows) */
+
+  /* --- Brand-locked --- */
+  --color-whatsapp: #25D366;       /* NEW: tokenized instead of hardcoded */
+  --color-whatsapp-deep: #1DA851;  /* NEW: hover */
+
+  /* --- Fonts --- */
   --font-display: var(--font-playfair);
   --font-body: var(--font-dm-sans);
   --font-arabic: var(--font-cairo);
+
+  /* --- Fluid type scale ---
+     One clamp-based ramp per role. Replaces the arbitrary
+     text-[2.5rem] values and every Safari @supports patch.
+     Usage: text-display, text-heading, text-lead            */
+  --text-display: clamp(2.75rem, 1.35rem + 5.2vw, 4.75rem);
+  --text-display--line-height: 1.06;
+  --text-display--letter-spacing: -0.015em;
+
+  --text-heading: clamp(2.05rem, 1.45rem + 2.2vw, 3.1rem);
+  --text-heading--line-height: 1.14;
+  --text-heading--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.0625rem, 0.95rem + 0.5vw, 1.3125rem);
+  --text-lead--line-height: 1.65;
+
+  /* --- Warm elevation ---
+     Usage: shadow-warm / shadow-warm-lg (replaces cold black shadows) */
+  --shadow-warm: 0 8px 24px -10px rgb(169 84 42 / 0.22);
+  --shadow-warm-lg: 0 18px 44px -14px rgb(169 84 42 / 0.28);
 }
 
+/* Plain custom properties (kept + extended) for non-utility usage */
 :root {
   --cream: #FBF8F3;
   --warm-white: #FFF9F2;
   --primary: #C96A35;
+  --primary-deep: #A9542A;
+  --primary-pale: #F8EEE4;
   --primary-light: #F2DDD1;
   --accent: #4A8C7A;
+  --accent-deep: #3B7263;
+  --accent-light: #E2EEE8;
+  --error: #BC4B33;
+  --error-light: #F8E4DE;
   --text-dark: #1E1208;
   --text-mid: #6B5744;
   --text-light: #A8917E;
   --border: #EDE0D4;
+  --border-strong: #DFCBB8;
 }
+
+/* ============================================================
+   BASE
+   ============================================================ */
 
 html {
   scroll-behavior: smooth;
+  /* Anchor targets no longer hide behind the fixed navbar */
 }
 
 body {
@@ -37,6 +100,22 @@ body {
   color: var(--text-mid);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
 }
+
+/* Consistent, on-brand keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* On-brand text selection */
+::selection {
+  background: var(--primary-light);
+  color: var(--text-dark);
+}
+
+/* ============================================================
+   ARABIC / RTL
+   ============================================================ */
 
 [dir="rtl"] {
   font-family: var(--font-cairo), system-ui, sans-serif;
@@ -51,10 +130,21 @@ body {
   font-family: var(--font-cairo), system-ui, sans-serif;
 }
 
+/* The data-arabic-ui hook now does what it was wired for:
+   Arabic-labelled elements render in Cairo even when the
+   surrounding document direction is LTR (e.g. inside the quiz). */
+[data-arabic-ui="true"] {
+  font-family: var(--font-cairo), system-ui, sans-serif;
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(22px);
   }
   to {
     opacity: 1;
@@ -78,14 +168,72 @@ body {
   }
 }
 
+/* --- Load-in animations (above-the-fold, run once) ---
+   fill-mode "both" keeps delayed elements hidden until their
+   turn, enabling clean staggered entrances.                  */
 .animate-fade-in-up {
-  animation: fade-in-up 0.6s ease forwards;
+  animation: fade-in-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.4s ease forwards;
+  animation: fade-in 0.4s ease both;
 }
 
 .animate-scale-in {
-  animation: scale-in 0.35s ease forwards;
+  animation: scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger helpers for load-in sequences */
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.22s; }
+.anim-delay-3 { animation-delay: 0.34s; }
+.anim-delay-4 { animation-delay: 0.46s; }
+
+/* --- Scroll-reveal system (below-the-fold) ---
+   Elements carry .reveal; an IntersectionObserver adds
+   .reveal-visible when they enter the viewport.
+   (Wiring ships with the section batches.)                   */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger helpers for grouped reveals (e.g. service cards) */
+.reveal-delay-1 { transition-delay: 90ms; }
+.reveal-delay-2 { transition-delay: 180ms; }
+.reveal-delay-3 { transition-delay: 270ms; }
+.reveal-delay-4 { transition-delay: 360ms; }
+
+/* ============================================================
+   REDUCED MOTION
+   Everything lands in its final state, instantly.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-scale-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }

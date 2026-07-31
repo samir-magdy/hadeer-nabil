@@ -57,7 +57,9 @@ export default function QuizModal({
   if (!isOpen) return null;
 
   const question = questions[currentIndex];
-  const progress = (currentIndex / questions.length) * 100;
+  // Fills as answers are confirmed, so the bar reaches 100% on the last check.
+  const answered = currentIndex + (confirmed ? 1 : 0);
+  const progress = (answered / questions.length) * 100;
   const isLast = currentIndex === questions.length - 1;
 
   function handleSelect(index: number) {
@@ -146,11 +148,11 @@ export default function QuizModal({
       aria-label="English level quiz"
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-text-dark/60 backdrop-blur-sm animate-fade-in" />
+      <div className="animate-fade-in absolute inset-0 bg-text-dark/65 backdrop-blur-sm" />
 
-      {/* Modal */}
+      {/* Modal — capped to the viewport, scrolls internally if needed */}
       <div
-        className="relative w-full max-w-lg bg-warm-white rounded-3xl shadow-2xl animate-scale-in overflow-hidden"
+        className="animate-scale-in relative flex max-h-[calc(100svh-2rem)] w-full max-w-lg flex-col overflow-hidden rounded-3xl bg-warm-white shadow-warm-lg"
         dir={modalDirection}
         data-arabic-ui={language === "ar" ? "true" : undefined}
       >
@@ -158,41 +160,30 @@ export default function QuizModal({
         <button
           onClick={onClose}
           aria-label="Close quiz"
-          className="cursor-pointer absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full text-text-light hover:text-text-dark hover:bg-border transition-colors z-10"
+          className="absolute top-4 end-4 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-text-light transition-colors duration-200 hover:bg-primary-pale hover:text-text-dark"
         >
           <svg
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
-            className="w-4 h-4"
+            className="h-4 w-4"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
         {stage === "intro" && (
-          <div className="px-6 py-10 text-center">
-            <h3
-              className="font-display text-2xl md:text-3xl text-text-dark italic my-4 leading-snug"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
+          <div className="overflow-y-auto px-6 py-11 text-center md:px-8">
+            <h3 className="font-display mb-4 text-2xl leading-snug text-text-dark md:text-3xl">
               {introContent.title}
             </h3>
-            <p
-              className="text-base text-text-mid leading-relaxed mb-8 max-w-sm mx-auto"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
+            <p className="mx-auto mb-8 max-w-sm leading-relaxed text-text-mid">
               {introContent.description}
             </p>
             <button
               onClick={() => setStage("quiz")}
-              className="cursor-pointer inline-flex items-center justify-center bg-primary text-warm-white font-medium px-8 py-4 rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base shadow-lg shadow-primary/25 w-full"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
+              className="w-full cursor-pointer rounded-full bg-primary px-8 py-4 text-base font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep hover:shadow-warm-lg active:scale-[0.98]"
             >
               {introContent.button}
             </button>
@@ -201,151 +192,121 @@ export default function QuizModal({
 
         {stage === "quiz" && (
           <>
-            {/* Progress */}
-            <div className="px-6 pt-6 pb-0">
-              <div className="flex items-center justify-between mb-2.5">
-                <span
-                  className="text-xs text-text-light font-medium"
-                  data-arabic-ui={language === "ar" ? "true" : undefined}
-                >
+            {/* Progress — pinned */}
+            <div className="shrink-0 px-6 pt-7 md:px-8">
+              <div className="mb-2.5 flex items-center justify-between">
+                <span className="text-xs font-medium tracking-wide text-text-light">
                   Question {currentIndex + 1} of {questions.length}
                 </span>
               </div>
-              <div className="h-1.5 bg-border rounded-full overflow-hidden">
+              <div className="h-1.5 overflow-hidden rounded-full bg-border">
                 <div
-                  className="h-full bg-primary rounded-full transition-all duration-500"
+                  className="h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
 
-            {/* Question */}
-            <div className="px-6 pt-6 pb-2">
-              <h3
-                className="font-display text-lg md:text-xl text-text-dark leading-snug"
-                data-arabic-ui={language === "ar" ? "true" : undefined}
-              >
+            {/* Question + options — the scrolling region */}
+            <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-6 pb-2 md:px-8">
+              <h3 className="font-display mb-5 text-lg leading-snug text-text-dark md:text-xl">
                 {question.text}
               </h3>
-            </div>
 
-            {/* Options */}
-            <div className="px-6 pb-4 flex flex-col gap-3 mt-2">
-              {question.options.map((option, i) => {
-                const isSelected = selectedOption === i;
-                const isCorrect = i === question.correctIndex;
+              <div className="flex flex-col gap-2.5">
+                {question.options.map((option, i) => {
+                  const isSelected = selectedOption === i;
+                  const isCorrect = i === question.correctIndex;
 
-                let style =
-                  "border border-border text-text-mid hover:border-primary hover:bg-primary-light/40";
+                  let style =
+                    "border-border text-text-mid hover:border-primary/60 hover:bg-primary-pale";
 
-                if (confirmed) {
-                  if (isCorrect) {
-                    style =
-                      "border border-accent bg-accent/10 font-medium text-accent";
-                  } else if (isSelected && !isCorrect) {
-                    style = "border border-red-400 bg-red-100 text-red-700";
-                  } else {
-                    style = "border border-border text-text-light opacity-60";
+                  if (confirmed) {
+                    if (isCorrect) {
+                      style = "border-accent bg-accent-light text-accent-deep";
+                    } else if (isSelected) {
+                      style = "border-error/60 bg-error-light text-error";
+                    } else {
+                      style = "border-border text-text-light opacity-55";
+                    }
+                  } else if (isSelected) {
+                    style = "border-primary bg-primary-light text-text-dark";
                   }
-                } else if (isSelected) {
-                  style =
-                    "border border-primary bg-primary-light text-text-dark font-medium";
-                }
 
-                return (
-                  <button
-                    key={i}
-                    onClick={() => handleSelect(i)}
-                    disabled={confirmed}
-                    className={`cursor-pointer w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 min-h-[56px] flex items-center justify-between subpixel-antialiased ${style}`}
-                  >
-                    {/* Wrap text in a block with a solid line-height to absorb font-weight adjustments */}
-                    <span className="leading-normal block pr-2 whitespace-nowrap">{option}</span>
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => handleSelect(i)}
+                      disabled={confirmed}
+                      className={`flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3.5 text-start text-[0.9375rem] transition-all duration-200 ${
+                        confirmed ? "cursor-default" : "cursor-pointer"
+                      } ${style}`}
+                    >
+                      {/* Wraps instead of clipping on narrow screens */}
+                      <span className="leading-normal">{option}</span>
 
-                    {/* Verification Icons */}
-                    {confirmed && isCorrect && (
-                      <svg
-                        className="w-5 h-5 shrink-0 text-accent ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        />
-                      </svg>
-                    )}
-                    {confirmed && isSelected && !isCorrect && (
-                      <svg
-                        className="w-5 h-5 shrink-0 text-red-500 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                );
-              })}
+                      {confirmed && isCorrect && (
+                        <svg
+                          className="h-5 w-5 shrink-0 text-accent"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                      )}
+
+                      {confirmed && isSelected && !isCorrect && (
+                        <svg
+                          className="h-5 w-5 shrink-0 text-error"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Next button */}
-            <div className="px-6 pb-6">
+            {/* Action — pinned */}
+            <div className="shrink-0 border-t border-border/70 px-6 py-5 md:px-8">
               <button
                 onClick={handleNext}
                 disabled={selectedOption === null}
-                className="cursor-pointer w-full bg-primary text-warm-white font-medium py-3.5 rounded-full text-sm hover:bg-primary/90 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 min-h-[52px]"
-                data-arabic-ui={language === "ar" ? "true" : undefined}
+                className="w-full cursor-pointer rounded-full bg-primary py-3.5 text-sm font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:active:scale-100"
               >
                 {!confirmed
                   ? "Check answer"
                   : isLast
                     ? "See my result"
-                    : "Next question →"}
+                    : "Next question"}
               </button>
             </div>
           </>
         )}
 
         {stage === "result" && translatedLevel && (
-          <div className="px-6 py-10 text-center">
+          <div className="overflow-y-auto px-6 py-11 text-center md:px-8">
             {/* Level badge */}
-            <div
-              className="inline-flex items-center gap-2 bg-primary-light text-primary text-sm font-medium px-4 py-1.5 rounded-full mb-6"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
-              <span className="font-display italic text-base">
-                {translatedLevel.code}
-              </span>
-              <span>·</span>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary-light px-4 py-1.5 text-sm font-medium text-primary">
+              <span className="font-display text-base">{translatedLevel.code}</span>
+              <span className="text-primary/50">·</span>
               <span>{translatedLevel.name}</span>
             </div>
 
-            <h3
-              className="font-display text-2xl md:text-3xl text-text-dark italic mb-3 leading-snug"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
+            <h3 className="font-display mb-3 text-2xl leading-snug text-text-dark md:text-3xl">
               {resultContent.heading}
             </h3>
-            <p
-              className="text-base text-text-mid leading-relaxed mb-3"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
+            <p className="mb-3 leading-relaxed text-text-mid">
               {translatedLevel.description}
             </p>
-            <p
-              className="text-sm text-text-light leading-relaxed mb-8 max-w-sm mx-auto"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
-            >
+            <p className="mx-auto mb-8 max-w-sm text-sm leading-relaxed text-text-light">
               {translatedLevel.suggestion}
             </p>
 
@@ -353,16 +314,14 @@ export default function QuizModal({
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium px-7 py-4 rounded-full hover:bg-[#25D366]/90 active:scale-95 transition-all duration-200 min-h-[52px] text-base w-full mb-3"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
+              className="group mb-4 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-whatsapp px-7 py-4 text-base font-medium text-white shadow-warm transition-all duration-200 hover:bg-whatsapp-deep hover:shadow-warm-lg active:scale-[0.98]"
             >
               <WhatsAppIcon />
               {resultContent.cta}
             </a>
             <button
               onClick={reset}
-              className="cursor-pointer text-sm text-text-light hover:text-text-mid transition-colors"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
+              className="cursor-pointer text-sm text-text-light underline decoration-border-strong underline-offset-4 transition-colors duration-200 hover:text-text-mid"
             >
               {resultContent.retake}
             </button>
@@ -396,7 +355,7 @@ const arabicLevelSuggestions = {
   A2: "أنت جاهز لتوسيع مفرداتك والبدء في تكوين جمل أكثر اكتمالًا.",
   B1: "أنت جاهز للدروس الحوارية وبنى نحوية أكثر تعقيدًا.",
   B2: "التحضير لاختبارات IELTS أو TOEFL أو الإنجليزية للأعمال خطوة ممتازة لك.",
-  C1: "سنحسّن كتابتك ون sharpen your academic or professional English and polish your style.",
+  C1: "سنحسّن كتابتك، ونصقل إنجليزيتك الأكاديمية أو المهنية، ونهذّب أسلوبك.",
   C2: "يمكننا التركيز على الكتابة المتقدمة أو النقاش أو الإنجليزية المتخصصة في مجالك.",
 } as const;
 
@@ -406,7 +365,7 @@ function WhatsAppIcon() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="w-5 h-5"
+      className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110"
       aria-hidden="true"
     >
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />

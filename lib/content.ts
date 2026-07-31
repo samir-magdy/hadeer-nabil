@@ -16,7 +16,6 @@ export interface PageContent {
     heading: string;
     paragraph1: string;
     paragraph2: string;
-    trustCards: Array<{ label: string; detail: string }>;
   };
   services: {
     heading: string;
@@ -30,7 +29,6 @@ export interface PageContent {
   footer: {
     creditPrefix: string;
   };
-
 }
 
 export const pageContent: Record<Language, PageContent> = {
@@ -45,10 +43,10 @@ export const pageContent: Record<Language, PageContent> = {
       ],
     },
     hero: {
-      title: "Learn English",
-      emphasis: "with confidence",
+      title: "Learn English with",
+      emphasis: "confidence",
       description:
-        "Private English lessons, online and in-person. Personalized and designed to help you communicate with confidence.",
+        "Private English lessons designed to help you communicate with confidence.",
       cta: "Find out your English level",
     },
     about: {
@@ -57,10 +55,6 @@ export const pageContent: Record<Language, PageContent> = {
         "Hi, I’m Hadeer — an English teacher based in Cairo with a passion for helping people find their voice in English. I’ve been teaching for several years and I work with students of all ages and goals, from young learners building their foundations to professionals preparing for interviews and exams.",
       paragraph2:
         "I believe lessons should feel like conversations, not lectures. Every student is different, so every lesson plan is too — built around your goals, your pace, and what actually motivates you to keep going.",
-      trustCards: [
-        { label: "All levels welcome", detail: "From complete beginners to advanced speakers" },
-        { label: "Online & in-person", detail: "Flexible lessons wherever works for you" },
-      ],
     },
     services: {
       heading: "What I teach",
@@ -120,10 +114,6 @@ export const pageContent: Record<Language, PageContent> = {
         "مرحبا، أنا هدير — معلمة إنجليزية في القاهرة وأحب مساعدة الناس على إيجاد صوتهم في الإنجليزية. أدرّس لعدة سنوات وأعمل مع طلاب من مختلف الأعمار والأهداف، من المتعلمين الصغار الذين يبنون أساسهم إلى المهنيين الذين يستعدون للمقابلات والامتحانات.",
       paragraph2:
         "أؤمن أن الدروس يجب أن تشعر وكأنها محادثة، وليس محاضرة. كل طالب مختلف، لذلك كل خطة درس مختلفة أيضًا — مبنية على أهدافك وسرعتك وما يحفّزك حقًا على الاستمرار.",
-      trustCards: [
-        { label: "مُرحّب بجميع المستويات", detail: "من المبتدئين تمامًا إلى المتحدثين المتقدمين" },
-        { label: "أونلاين ووجاهي", detail: "دروس مرنة أينما يناسبك" },
-      ],
     },
     services: {
       heading: "الدروس الخاصة",
@@ -152,13 +142,11 @@ export const pageContent: Record<Language, PageContent> = {
     },
     contact: {
       heading: "مستعد للبدء؟",
-      description:
-        "تواصل معي وسنحدد لك أفضل خطة دراسية.",
+      description: "تواصل معي وسنحدد لك أفضل خطة دراسية.",
       cta: "تواصل عبر الواتساب",
     },
     footer: {
       creditPrefix: "تم تطوير الموقع بواسطة",
     },
- 
   },
 };

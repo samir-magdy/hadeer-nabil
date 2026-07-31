@@ -7,6 +7,7 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import QuizModal from "@/components/QuizModal";
 import Contact from "@/components/Contact";
+import FooterCredit from "@/components/FooterCredit";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { Language } from "@/lib/content";
 
@@ -30,6 +31,7 @@ export default function Home() {
         <Services language={language} />
         <Contact language={language} />
       </main>
+      <FooterCredit language={language} />
       {!quizOpen && <FloatingWhatsApp />}
       <QuizModal
         isOpen={quizOpen}

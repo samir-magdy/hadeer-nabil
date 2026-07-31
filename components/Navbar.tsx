@@ -24,51 +24,61 @@ export default function Navbar({
   const content = pageContent[language];
   const navLinks = content.navbar.links;
 
+  // Reuses the quiz's own existing button copy — no new content introduced.
+  const quizCta = language === "ar" ? "ابدأ الاختبار" : "Start the quiz";
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-cream/90 backdrop-blur-md border-border shadow-sm"
-          : "bg-transparent"
+          ? "border-b border-border bg-cream/90 shadow-sm backdrop-blur-md"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-18">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:h-20 lg:px-8">
         {/* Logo */}
         <a
           href="#"
-          className="font-display text-2xl md:text-2xl text-text-dark tracking-tight"
-          data-arabic-ui={language === "ar" ? "true" : undefined}
+          className="font-display text-2xl tracking-tight text-text-dark"
         >
           {content.navbar.logo}
         </a>
 
-        <div className="hidden md:flex items-center gap-4 md:gap-16">
-          {/* Desktop nav */}
+        {/* Desktop */}
+        <div className="hidden items-center gap-8 md:flex lg:gap-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="cursor-pointer text-sm md:text-xl text-text-mid hover:text-text-dark transition-colors duration-200"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
+              className="relative cursor-pointer text-[0.9375rem] text-text-mid transition-colors duration-200 after:absolute after:-bottom-1 after:start-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:text-text-dark hover:after:scale-x-100 rtl:after:origin-right"
             >
               {link.label}
             </a>
           ))}
 
-        </div>
           <button
             type="button"
             onClick={() => onLanguageChange(language === "en" ? "ar" : "en")}
-            className="hidden md:inline-block cursor-pointer rounded-full border border-border px-3 py-1.5 text-sm sm:text-base text-text-dark transition-colors hover:bg-primary-light"
+            className="cursor-pointer rounded-full border border-border-strong px-3.5 py-1.5 text-sm text-text-dark transition-colors duration-200 hover:border-primary hover:bg-primary-pale"
           >
             {language === "en" ? "عربي" : "EN"}
           </button>
 
+          <button
+            type="button"
+            onClick={onOpenQuiz}
+            className="cursor-pointer rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep active:scale-[0.98]"
+          >
+            {quizCta}
+          </button>
+        </div>
+
+        {/* Mobile controls */}
         <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
             onClick={() => onLanguageChange(language === "en" ? "ar" : "en")}
-            className="cursor-pointer rounded-full border border-border px-3 py-1.5 text-sm text-text-dark transition-colors hover:bg-primary-light"
+            className="cursor-pointer rounded-full border border-border-strong px-3 py-1.5 text-sm text-text-dark transition-colors duration-200 hover:border-primary hover:bg-primary-pale"
           >
             {language === "en" ? "عربي" : "EN"}
           </button>
@@ -77,10 +87,10 @@ export default function Navbar({
             onClick={() => setMenuOpen((o) => !o)}
             aria-label={content.navbar.menuAria}
             aria-expanded={menuOpen}
-            className="cursor-pointer md:hidden relative flex h-11 w-11 items-center justify-center"
+            className="relative flex h-11 w-11 cursor-pointer items-center justify-center"
           >
             <span
-              className={`absolute block h-0.5 w-6 rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out origin-center ${
+              className={`absolute block h-0.5 w-6 origin-center rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out ${
                 menuOpen ? "translate-y-0 rotate-45" : "-translate-y-2"
               }`}
             />
@@ -90,33 +100,42 @@ export default function Navbar({
               }`}
             />
             <span
-              className={`absolute block h-0.5 w-6 rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out origin-center ${
+              className={`absolute block h-0.5 w-6 origin-center rounded-full bg-text-dark transition-[transform,opacity] duration-300 ease-out ${
                 menuOpen ? "translate-y-0 -rotate-45" : "translate-y-2"
               }`}
             />
           </button>
         </div>
-
       </nav>
 
       {/* Mobile drawer */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
-          menuOpen ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
-        } bg-warm-white border-b border-border`}
+        className={`overflow-hidden border-b border-border bg-warm-white transition-all duration-300 ease-out md:hidden ${
+          menuOpen ? "max-h-96 opacity-100 shadow-sm" : "max-h-0 opacity-0"
+        }`}
       >
-        <div className="px-4 py-4 flex flex-col gap-4">
+        <div className="flex flex-col gap-1 px-6 py-5">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="cursor-pointer text-base text-text-mid hover:text-text-dark transition-colors py-1"
-              data-arabic-ui={language === "ar" ? "true" : undefined}
+              className="cursor-pointer rounded-lg px-2 py-2.5 text-base text-text-mid transition-colors duration-200 hover:bg-primary-pale hover:text-text-dark"
             >
               {link.label}
             </a>
           ))}
+
+          <button
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenQuiz();
+            }}
+            className="mt-3 w-full cursor-pointer rounded-full bg-primary px-6 py-3.5 text-base font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep active:scale-[0.98]"
+          >
+            {quizCta}
+          </button>
         </div>
       </div>
     </header>
