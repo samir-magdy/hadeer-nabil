@@ -63,7 +63,7 @@ export default function Hero({ onOpenQuiz, language }: HeroProps) {
             <div className="animate-fade-in-up anim-delay-2">
               <button
                 onClick={onOpenQuiz}
-                className="group inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-primary px-8 py-4 text-base font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep hover:shadow-warm-lg active:scale-[0.98] sm:w-auto md:px-9"
+                className="group inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-primary px-8 py-4 text-base sm:text-xl font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep hover:shadow-warm-lg active:scale-[0.98] sm:w-4/5 md:px-9"
               >
                 <span>{content.cta}</span>
                 <svg
