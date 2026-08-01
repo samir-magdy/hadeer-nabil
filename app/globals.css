@@ -42,8 +42,6 @@
 
   /* --- Fonts --- */
   --font-display: var(--font-playfair);
-  --font-body: var(--font-dm-sans);
-  --font-arabic: var(--font-cairo);
 
   /* --- Fluid type scale ---
      One clamp-based ramp per role. Replaces the arbitrary
@@ -66,24 +64,15 @@
   --shadow-warm-lg: 0 18px 44px -14px rgb(169 84 42 / 0.28);
 }
 
-/* Plain custom properties (kept + extended) for non-utility usage */
+/* Short aliases for the handful of tokens consumed via var() in raw CSS
+   (below) and inline <style> blocks. Utility-class consumers read the
+   @theme tokens directly. */
 :root {
   --cream: #FBF8F3;
-  --warm-white: #FFF9F2;
   --primary: #C96A35;
-  --primary-deep: #A9542A;
-  --primary-pale: #F8EEE4;
   --primary-light: #F2DDD1;
-  --accent: #4A8C7A;
-  --accent-deep: #3B7263;
-  --accent-light: #E2EEE8;
-  --error: #BC4B33;
-  --error-light: #F8E4DE;
   --text-dark: #1E1208;
   --text-mid: #6B5744;
-  --text-light: #A8917E;
-  --border: #EDE0D4;
-  --border-strong: #DFCBB8;
 }
 
 /* ============================================================
@@ -125,8 +114,7 @@ body {
   font-family: inherit;
 }
 
-[dir="rtl"] .font-display,
-[dir="rtl"] .font-body {
+[dir="rtl"] .font-display {
   font-family: var(--font-cairo), system-ui, sans-serif;
 }
 
@@ -186,31 +174,6 @@ body {
 /* Stagger helpers for load-in sequences */
 .anim-delay-1 { animation-delay: 0.1s; }
 .anim-delay-2 { animation-delay: 0.22s; }
-.anim-delay-3 { animation-delay: 0.34s; }
-.anim-delay-4 { animation-delay: 0.46s; }
-
-/* --- Scroll-reveal system (below-the-fold) ---
-   Elements carry .reveal; an IntersectionObserver adds
-   .reveal-visible when they enter the viewport.
-   (Wiring ships with the section batches.)                   */
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger helpers for grouped reveals (e.g. service cards) */
-.reveal-delay-1 { transition-delay: 90ms; }
-.reveal-delay-2 { transition-delay: 180ms; }
-.reveal-delay-3 { transition-delay: 270ms; }
-.reveal-delay-4 { transition-delay: 360ms; }
 
 /* ============================================================
    REDUCED MOTION
@@ -220,13 +183,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .reveal,
-  .reveal-visible {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 
   .animate-fade-in-up,

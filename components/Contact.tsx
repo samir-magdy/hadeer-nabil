@@ -1,6 +1,5 @@
 import { EMAIL, PHONE_NUMBER, SOCIAL, WHATSAPP_URL } from "@/lib/constants";
 import { Language, pageContent } from "@/lib/content";
-import Reveal from "./Reveal";
 
 export default function Contact({ language }: { language: Language }) {
   const content = pageContent[language].contact;
@@ -11,86 +10,76 @@ export default function Contact({ language }: { language: Language }) {
       className="relative overflow-hidden bg-warm-white py-24 md:py-32 lg:py-40"
     >
       <div className="relative z-10 mx-auto max-w-3xl px-6 text-center lg:px-8">
-        <Reveal>
-          <h2 className="font-display text-heading mb-5 text-balance text-text-dark md:mb-6">
-            {content.heading}
-          </h2>
-        </Reveal>
+        <h2 className="font-display text-heading mb-5 text-balance text-text-dark md:mb-6">
+          {content.heading}
+        </h2>
 
-        <Reveal delay={1}>
-          <p className="text-lead mx-auto mb-10 max-w-xl text-text-mid md:mb-12 rtl:leading-loose">
-            {content.description}
-          </p>
-        </Reveal>
+        <p className="text-lead mx-auto mb-10 max-w-xl text-text-mid md:mb-12 rtl:leading-loose">
+          {content.description}
+        </p>
 
         {/* Primary action */}
-        <Reveal delay={2}>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-3 rounded-full bg-whatsapp px-8 py-4 text-base font-semibold text-white shadow-warm transition-all duration-200 hover:bg-whatsapp-deep hover:shadow-warm-lg active:scale-[0.98] md:px-10 md:text-lg"
-          >
-            <WhatsAppGlyph />
-            <span>{content.cta}</span>
-          </a>
-        </Reveal>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center justify-center gap-3 rounded-full bg-whatsapp px-8 py-4 text-base font-semibold text-white shadow-warm transition-all duration-200 hover:bg-whatsapp-deep hover:shadow-warm-lg active:scale-[0.98] md:px-10 md:text-lg"
+        >
+          <WhatsAppGlyph />
+          <span>{content.cta}</span>
+        </a>
 
         {/* Secondary: direct contact rows */}
-        <Reveal delay={2}>
-          <div className="mx-auto mt-12 flex max-w-md flex-col gap-3 md:mt-14">
-            <ContactRow
-              href={`mailto:${EMAIL}`}
-              value={EMAIL}
-              icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-[18px] w-[18px] shrink-0"
-                >
-                  <rect width="20" height="16" x="2" y="4" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-              }
-            />
-            <ContactRow
-              href={`tel:${PHONE_NUMBER}`}
-              value={PHONE_NUMBER}
-              icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-[18px] w-[18px] shrink-0"
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              }
-            />
-          </div>
-        </Reveal>
+        <div className="mx-auto mt-12 flex max-w-md flex-col gap-3 md:mt-14">
+          <ContactRow
+            href={`mailto:${EMAIL}`}
+            value={EMAIL}
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-[18px] w-[18px] shrink-0"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            }
+          />
+          <ContactRow
+            href={`tel:${PHONE_NUMBER}`}
+            value={PHONE_NUMBER}
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-[18px] w-[18px] shrink-0"
+              >
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+            }
+          />
+        </div>
 
         {/* Tertiary: socials */}
-        <Reveal delay={2}>
-          <div className="mt-10 flex items-center justify-center gap-3 md:mt-12">
-            <SocialLink href={SOCIAL.tiktok} label="TikTok">
-              <TikTokIcon />
-            </SocialLink>
-            <SocialLink href={SOCIAL.instagram} label="Instagram">
-              <InstagramIcon />
-            </SocialLink>
-            <SocialLink href={SOCIAL.youtube} label="YouTube">
-              <YouTubeIcon />
-            </SocialLink>
-          </div>
-        </Reveal>
+        <div className="mt-10 flex items-center justify-center gap-3 md:mt-12">
+          <SocialLink href={SOCIAL.tiktok} label="TikTok">
+            <TikTokIcon />
+          </SocialLink>
+          <SocialLink href={SOCIAL.instagram} label="Instagram">
+            <InstagramIcon />
+          </SocialLink>
+          <SocialLink href={SOCIAL.youtube} label="YouTube">
+            <YouTubeIcon />
+          </SocialLink>
+        </div>
       </div>
     </section>
   );
