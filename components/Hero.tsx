@@ -34,7 +34,7 @@ export default function Hero({ onOpenQuiz, language }: HeroProps) {
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
           {/* Text */}
           <div className="order-2 md:order-1">
-            <h1 className="animate-fade-in-up leading-tight font-display text-[clamp(2rem,10vw,5rem)] sm:text-display mb-6 text-balance text-text-dark md:mb-8">
+            <h1 className="ps-4 sm:ps-0 animate-fade-in-up leading-tight font-display text-[clamp(2rem,10vw,5rem)] sm:text-display mb-6 text-balance text-text-dark md:mb-8">
               {content.title}{" "}
               <em className="relative inline-block whitespace-nowrap text-primary">
                 {content.emphasis}
@@ -56,14 +56,14 @@ export default function Hero({ onOpenQuiz, language }: HeroProps) {
               </em>
             </h1>
 
-            <p className="animate-fade-in-up anim-delay-1 text-[clamp(1.1rem,2.5vw,1.5rem)] mb-6 max-w-85 sm:max-w-xl text-text-mid md:mb-10 rtl:leading-loose">
+            <p className="ps-4 sm:ps-0 animate-fade-in-up anim-delay-1 text-[clamp(1.1rem,2.5vw,1.5rem)] mb-6 max-w-85 sm:max-w-xl text-text-mid md:mb-10 rtl:leading-loose">
               {content.description}
             </p>
 
-            <div className="animate-fade-in-up anim-delay-2">
+            <div className="ps-4 sm:ps-0 animate-fade-in-up anim-delay-2">
               <button
                 onClick={onOpenQuiz}
-                className="group inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-primary px-8 py-4 text-base sm:text-xl font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep hover:shadow-warm-lg active:scale-[0.98] sm:w-4/5 md:px-9"
+                className="group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-primary px-10 py-4 text-base sm:text-xl font-medium text-warm-white shadow-warm transition-all duration-200 hover:bg-primary-deep hover:shadow-warm-lg active:scale-[0.98] sm:w-4/5 md:px-9"
               >
                 <span>{content.cta}</span>
                 <svg

@@ -43,7 +43,7 @@ export const pageContent: Record<Language, PageContent> = {
       ],
     },
     hero: {
-      title: "Learn English with",
+      title: "Speak English with",
       emphasis: "confidence",
       description:
         "Private English lessons designed to help you communicate with confidence.",
@@ -102,7 +102,7 @@ export const pageContent: Record<Language, PageContent> = {
       ],
     },
     hero: {
-      title: "تعلّم الإنجليزية",
+      title: "تكلم الإنجليزية",
       emphasis: "بثقة",
       description:
         "دروس خاصة للإنجليزية، أونلاين أو حضورياً. مصممة لمساعدتك على التواصل بثقة.",
