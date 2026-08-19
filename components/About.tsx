@@ -36,19 +36,13 @@ export default function About({ language }: { language: Language }) {
             </p>
 
             {/* Image — mobile, between the paragraphs */}
-            <div className="relative mb-8 md:hidden">
-              <div
-                aria-hidden="true"
-                className="absolute -bottom-3 -end-3 h-full w-full rounded-2xl border border-primary/35"
-              />
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-warm">
+              <div className="relative mb-8 md:hidden aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-warm">
                 <img
                   src={ABOUT_IMAGE_SRC}
                   alt={ABOUT_IMAGE_ALT}
                   className="h-full w-full object-cover"
                 />
               </div>
-            </div>
 
             <p className="text-base leading-relaxed text-text-mid md:text-lg rtl:leading-loose">
               {content.paragraph2}

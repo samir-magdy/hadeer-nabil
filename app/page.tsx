@@ -13,7 +13,7 @@ import { Language } from "@/lib/content";
 
 export default function Home() {
   const [quizOpen, setQuizOpen] = useState(false);
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>("ar");
 
   return (
     <div

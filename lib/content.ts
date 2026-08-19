@@ -24,7 +24,6 @@ export interface PageContent {
   contact: {
     heading: string;
     description: string;
-    cta: string;
   };
   footer: {
     creditPrefix: string;
@@ -47,12 +46,12 @@ export const pageContent: Record<Language, PageContent> = {
       emphasis: "confidence",
       description:
         "Private English lessons designed to help you communicate with confidence.",
-      cta: "Find out your English level",
+      cta: "Find out your level",
     },
     about: {
-      heading: "A tutor who listens before she teaches.",
+      heading: "About me",
       paragraph1:
-        "Hi, I’m Hadeer — an English teacher based in Cairo with a passion for helping people find their voice in English. I’ve been teaching for several years and I work with students of all ages and goals, from young learners building their foundations to professionals preparing for interviews and exams.",
+        "I’m Hadeer, an English teacher based in Cairo with a passion for helping people find their voice in English. I’ve been teaching for several years and I work with students of all ages and goals, from young learners building their foundations to professionals preparing for interviews and exams.",
       paragraph2:
         "I believe lessons should feel like conversations, not lectures. Every student is different, so every lesson plan is too — built around your goals, your pace, and what actually motivates you to keep going.",
     },
@@ -84,8 +83,7 @@ export const pageContent: Record<Language, PageContent> = {
     contact: {
       heading: "Ready to get started?",
       description:
-        "Reach out and we’ll figure out the best lesson plan for you — no pressure, just a conversation.",
-      cta: "Chat on WhatsApp",
+        "Reach out and we’ll figure out the best lesson plan for you.",
     },
     footer: {
       creditPrefix: "Website by",
@@ -106,12 +104,12 @@ export const pageContent: Record<Language, PageContent> = {
       emphasis: "بثقة",
       description:
         "دروس خاصة للإنجليزية، أونلاين أو حضورياً. مصممة لمساعدتك على التواصل بثقة.",
-      cta: "اكتشف مستواك في الإنجليزية",
+      cta: "اكتشف مستواك",
     },
     about: {
-      heading: "مُدرسة تستمع قبل أن تُعلّم.",
+      heading: "من أنا",
       paragraph1:
-        "مرحبا، أنا هدير — معلمة إنجليزية في القاهرة وأحب مساعدة الناس على إيجاد صوتهم في الإنجليزية. أدرّس لعدة سنوات وأعمل مع طلاب من مختلف الأعمار والأهداف، من المتعلمين الصغار الذين يبنون أساسهم إلى المهنيين الذين يستعدون للمقابلات والامتحانات.",
+        "أنا هدير، معلمة إنجليزية في القاهرة وأحب مساعدة الناس على إيجاد صوتهم في الإنجليزية. أدرّس لعدة سنوات وأعمل مع طلاب من مختلف الأعمار والأهداف، من المتعلمين الصغار الذين يبنون أساسهم إلى المهنيين الذين يستعدون للمقابلات والامتحانات.",
       paragraph2:
         "أؤمن أن الدروس يجب أن تشعر وكأنها محادثة، وليس محاضرة. كل طالب مختلف، لذلك كل خطة درس مختلفة أيضًا — مبنية على أهدافك وسرعتك وما يحفّزك حقًا على الاستمرار.",
     },
@@ -143,7 +141,6 @@ export const pageContent: Record<Language, PageContent> = {
     contact: {
       heading: "مستعد للبدء؟",
       description: "تواصل معي وسنحدد لك أفضل خطة دراسية.",
-      cta: "تواصل عبر الواتساب",
     },
     footer: {
       creditPrefix: "تم تطوير الموقع بواسطة",

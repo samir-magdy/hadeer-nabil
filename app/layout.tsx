@@ -39,7 +39,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ar"
+      dir="rtl"
       className={`${playfair.variable} ${dmSans.variable} ${cairo.variable}`}
     >
       <body className="min-h-screen antialiased">
