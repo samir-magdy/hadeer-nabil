@@ -94,7 +94,7 @@ export const pageContent: Record<Language, PageContent> = {
       logo: "هدير نبيل",
       menuAria: "تبديل القائمة",
       links: [
-        { label: "كيف أعمل", href: "#about" },
+        { label: "من أنا", href: "#about" },
         { label: "الخدمات", href: "#services" },
         { label: "تواصل معي", href: "#contact" },
       ],
